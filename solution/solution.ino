@@ -3,7 +3,7 @@
 constexpr int buttonPins[] { button1_pin, button2_pin, button3_pin };
 constexpr int buttonPinsCount = sizeof(buttonPins) / sizeof(buttonPins[0]);
 
-constexpr int no_of_glyphs = 5;
+constexpr int no_of_glyphs = 4;
 constexpr int dice_types[] {4, 6, 10, 12, 20, 100};
 constexpr byte segmentMap[] = {
     0xC0, // 0  0b11000000
