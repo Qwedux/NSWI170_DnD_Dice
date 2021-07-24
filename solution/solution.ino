@@ -85,31 +85,21 @@ struct seg_display {
 int line_break = 0;
 
 struct generator_of_randomness{
-  unsigned long long a = 25214903917;
-  unsigned long long c = 11;
-  unsigned long long previous = 0;
-  void rseed(unsigned long long seed) {
-      previous = seed;
-  }
-  unsigned long long random() {
-      unsigned long long r = a * previous + c;
-      previous = r;
-      return r;
-  }/*credit to: https://stackoverflow.com/a/15038230 */
   int get_result_of_dice_rolls(configuration conf){
-    unsigned int result = 0;
-    rseed(millis());
+    unsigned long long result = 0;
+    randomSeed(millis());
     for(unsigned int repeats = 0; repeats < conf.get_dice_rolls(); repeats++){
-      result +=  (((unsigned int)(random())) % conf.get_current_dice()) + 1;
+      unsigned long long a = ((random(conf.get_current_dice())+conf.get_current_dice()) % conf.get_current_dice()) + 1;
+      result +=  a;
     }
-    Serial.print(result);
-    Serial.print(", ");
-    line_break++;
-    if(line_break == 40){
-      line_break = 0;
-      Serial.print("\n");
-    }
-    return (int)result;
+    // Serial.print((int)result);
+    // Serial.print(", ");
+    // line_break++;
+    // if(line_break == 40){
+    //   line_break = 0;
+    //   Serial.print("\n");
+    // }
+    return result;
   }
 };
 
@@ -147,7 +137,7 @@ configuration settings;
 seg_display displej(settings);
 generator_of_randomness generator;
 unsigned long time;
-constexpr unsigned long when_to_get_new_number = 20;
+constexpr unsigned long when_to_get_new_number = 40;
 modes mode = modes::CONFIGURATION;
 
 void setup() {
@@ -160,7 +150,7 @@ void setup() {
   pinMode(latch_pin, OUTPUT);
   pinMode(clock_pin, OUTPUT);
   pinMode(data_pin, OUTPUT);
-  Serial.begin(9600);
+  // Serial.begin(9600);
 }
 
 void keep_generating(){
